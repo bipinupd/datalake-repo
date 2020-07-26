@@ -1,0 +1,34 @@
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cp -R /workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/ /workspace/
+        if [[ ! -f "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml" ]]; then
+          cat "/workspace/datalake-repo/cloud-build-deploy/pipelines/deployment-assets/base.yaml" > "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml"
+          cd "/workspace/${_PIPELINE_NAME}/"
+          ls
+          for dir in `find . -maxdepth 1 -mindepth 1 -type d`; do
+              directory=`echo "$dir" | sed 's/\.\///g'`
+              echo "$directory"
+              if [[ -f "/workspace/datalake-repo/cloud-build-deploy/pipelines/deployment-assets/"$directory"-step.yaml" ]]; then
+                  cat "/workspace/datalake-repo/cloud-build-deploy/pipelines/deployment-assets/"$directory"-step.yaml" >> "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml"
+                  if [[ -f "/workspace/${_PIPELINE_NAME}/scripts/$directory/command" ]]; then
+                    command=`cat "/workspace/${_PIPELINE_NAME}/scripts/$directory/command"`
+                    sed "s|command|$command|g" "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml" > "/workspace/${_PIPELINE_NAME}/temp.yaml"
+                    mv "/workspace/${_PIPELINE_NAME}/temp.yaml" "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml"
+                  fi
+              fi
+          done
+          cat "/workspace/datalake-repo/cloud-build-deploy/pipelines/deployment-assets/final.yaml" >> "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml"
+        fi
+        cat  "/workspace/${_PIPELINE_NAME}/cloudbuild-deploy.yaml"
+        cd /workspace/
+        zip -r ${_PIPELINE_NAME}.zip ${_PIPELINE_NAME}/
+      id: 'Deployable Pipeline Artifact'
+artifacts:
+  objects:
+    location: 'gs://${_ARTIFACT_REPO}/${_SHORT_SHA}/'
+    paths: ['${_PIPELINE_NAME}.zip']
+options:
+  substitution_option: 'ALLOW_LOOSE'

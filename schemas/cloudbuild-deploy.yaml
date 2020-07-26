@@ -1,0 +1,20 @@
+steps:
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Download Schema Artifact'
+      args: ['gsutil', 'cp', 'gs://${_ARTIFACT_REPO}/${_SHORT_SHA}/schemas.zip', '/workspace/schemas.zip']
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/
+        unzip -f schemas.zip
+      id: 'Unzip artifact'
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Deploy Artifacts'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          cd /workspace/schemas
+          bash /workspace/schemas/scripts/deploy_schema_script.sh $_ENTERPRISE $_WORK $_LANDING

@@ -1,0 +1,15 @@
+    - name: maven:3-jdk-8
+      entrypoint: mvn
+      args: ['spotless:check']
+      dir: '/workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/dataflow_java/'
+      id: 'Check Formatting'
+    - name: maven:3-jdk-8
+      entrypoint: mvn
+      args: ['test']
+      dir: '/workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/dataflow_java/'
+      id: 'Unit Test Dataflow'
+    - name: maven:3-jdk-8
+      entrypoint: mvn
+      args: ['package']
+      dir: '/workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/dataflow_java/'
+      id: 'Package'

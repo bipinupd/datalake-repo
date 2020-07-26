@@ -1,0 +1,38 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Download Pipeline Artifact'
+    entrypoint: bash
+    args: 
+    - '-c'
+    - |
+      mkdir -p  /workspace/${_SHORT_SHA}
+      gsutil cp gs://${_ARTIFACT_REPO}/${_SHORT_SHA}/*.zip /workspace/${_SHORT_SHA}/
+  - name: 'gcr.io/${PROJECT_ID}/zip'
+    entrypoint: bash
+    args:
+    - '-c'
+    - |
+      cd /workspace/${_SHORT_SHA}/
+      unzip '*.zip'
+      rm *.zip
+    id: 'Unzip artifact'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+    - '-c'
+    - |
+      export _TEMPLATE_BUCKET=${_TEMPLATE_BUCKET}
+      export _COMPOSER_BUCKET=${_COMPOSER_BUCKET}
+      export _ENTERPRISE=${_ENTERPRISE}
+      export _LANDING=${_LANDING}
+      export _ARTIFACT_REPO=${_ARTIFACT_REPO}
+      export _WORK=${_WORK}
+      export _SHORT_SHA=${_SHORT_SHA}
+      echo $_TEMPLATE_BUCKET
+      echo $_ARTIFACT_REPO
+      echo $_SHORT_SHA
+      echo $_COMPOSER_BUCKET
+
+      env | grep "^_" > /workspace/build_vars
+      bash "/workspace/${_SHORT_SHA}/cloud-build-deploy/scripts/deploy.sh"
+    id: 'Calling Individual Deploys'

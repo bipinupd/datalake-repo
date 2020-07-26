@@ -1,0 +1,10 @@
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Copy Dag'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          gsutil cp /workspace/${_PIPELINE_NAME}/airflow/dag/* gs://${_COMPOSER_BUCKET}/dags/
+          if [[ -d "/workspace/${_PIPELINE_NAME}/airflow/data/${_PIPELINE_NAME}" ]]; then
+            gsutil cp /workspace/${_PIPELINE_NAME}/airflow/data/${_PIPELINE_NAME}/* gs://${_COMPOSER_BUCKET}/data/${_PIPELINE_NAME}/
+          fi

@@ -1,0 +1,36 @@
+steps:
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Download DLP Artifact'
+      args: ['gsutil', 'cp', 'gs://${_ARTIFACT_REPO}/${_SHORT_SHA}/dlp.zip', '/workspace/dlp.zip']
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/
+        unzip -f dlp.zip
+      id: 'Unzip artifact'
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Deploy Artifacts'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          cd /workspace/dlp
+          deidentify_status=$(bash /workspace/dlp/scripts/deidentify_script.sh $_WORK)
+          inspect_status=$(bash /workspace/dlp/scripts/inspect_script.sh $_WORK)
+          if [[ $deidentify_status -eq "0" ]] && [[ $inspect_status -eq "0" ]]
+          then
+            echo 0
+          else
+            echo -1
+          fi
+    - name: 'gcr.io/${PROJECT_ID}/dp-test-python'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/dlp/tests
+        pytest -m smoke --project_id=$_WORK -s
+      id: 'IT/Smoke Test'
+          

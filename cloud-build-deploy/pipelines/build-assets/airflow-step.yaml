@@ -1,0 +1,16 @@
+    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        yapf -r -q /workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/airflow/
+      id: 'Check Code Format (Airflow)'
+    - name: 'gcr.io/${PROJECT_ID}/airflow_image'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/
+        python3 -m pytest -v tests/airflow/
+      id: 'Unit Test airflow(DAG)'
+      env: ['AIRFLOW__CORE__DAGS_FOLDER=/workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/airflow/dag']

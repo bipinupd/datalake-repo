@@ -1,0 +1,1 @@
+INSERT INTO `{{ params.destination_project }}.dlp_data.test` (SELECT * from `{{ params.source_project }}.dlp_data.sample`)

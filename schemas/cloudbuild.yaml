@@ -1,0 +1,28 @@
+steps:
+    - name: 'gcr.io/cloud-builders/git'
+      entrypoint: bash
+      id: 'Checkout Code'
+      args:
+        - '-c'
+        - |
+          git clone https://github.com/bipinupd/datalake-repo.git
+          cd /workspace/datalake-repo/
+          git checkout $_BRANCHNAME
+          git config pull.rebase false
+          git pull origin $_BRANCHNAME
+          git diff --name-only $_BRANCHNAME master -- schemas/ > /workspace/schema-diff.txt
+          cd /workspace/datalake-repo/schemas
+          find . -type d > /workspace/dir-structure.txt
+          cat /workspace/dir-structure.txt
+          cat /workspace/schema-diff.txt
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          bash /workspace/datalake-repo/schemas/scripts/package.sh
+      id: 'Deployable Schema artifacts'
+artifacts:
+  objects:
+    location: 'gs://${_ARTIFACT_REPO}/${_SHORT_SHA}'
+    paths: ['/workspace/schemas.zip']

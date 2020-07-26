@@ -1,0 +1,16 @@
+    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        yapf -r -q /workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/dataflow_python_template/
+      id: 'Check Code Format (Dataflow)'
+    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/datalake-repo/pipelines/${_PIPELINE_NAME}/
+        pip install -e .
+        python3 -m pytest -v tests/dataflow/
+      id: 'Unit Test Dataflow'

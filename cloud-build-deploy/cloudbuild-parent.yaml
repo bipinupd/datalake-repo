@@ -1,0 +1,29 @@
+steps:
+    - name: 'gcr.io/cloud-builders/git'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          git clone https://github.com/bipinupd/datalake-repo.git
+          cd datalake-repo
+          git checkout $BRANCH_NAME
+          git diff --name-only $BRANCH_NAME master --output /workspace/diff.txt
+          bash cloud-build-deploy/scripts/build.sh ${_ARTIFACT_REPO} $BRANCH_NAME ${SHORT_SHA}
+      id: "Cloud Build"
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      id: 'Package deployment scripts'
+      entrypoint: bash
+      args: 
+        - '-c'
+        - |
+          cd /workspace
+          cp -R /workspace/datalake-repo/cloud-build-deploy /workspace/cloud-build-deploy 
+          cd /workspace
+          zip -r cloud-build-deploy.zip cloud-build-deploy/
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Upload deployment scripts'
+      entrypoint: bash
+      args: 
+        - '-c'
+        - |
+          gsutil cp /workspace/cloud-build-deploy.zip gs://${_ARTIFACT_REPO}/${SHORT_SHA}/

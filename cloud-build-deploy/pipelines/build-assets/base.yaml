@@ -1,0 +1,12 @@
+steps:
+    - name: 'gcr.io/cloud-builders/git'
+      entrypoint: bash
+      id: 'Checkout Code'
+      args:
+        - '-c'
+        - |
+          git clone https://github.com/bipinupd/datalake-repo.git
+          cd /workspace/datalake-repo/
+          git checkout $_BRANCHNAME
+          git config pull.rebase false
+          git pull origin $_BRANCHNAME

@@ -1,0 +1,8 @@
+    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
+      id: 'Deploy Template'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/${_PIPELINE_NAME}/
+        command

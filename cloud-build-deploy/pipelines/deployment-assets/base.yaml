@@ -1,0 +1,12 @@
+steps:
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Download Pipeline Artifact'
+      args: ['gsutil', 'cp', 'gs://${_ARTIFACT_REPO}/${_SHORT_SHA}/${_PIPELINE_NAME}.zip', '/workspace/']
+    - name: 'gcr.io/${PROJECT_ID}/zip'
+      entrypoint: bash
+      args:
+      - '-c'
+      - |
+        cd /workspace/
+        unzip -f ${_PIPELINE_NAME}.zip
+      id: 'Unzip artifact'

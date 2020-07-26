@@ -1,0 +1,9 @@
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      id: 'Copy Java Artifact'
+      entrypoint: bash
+      args:
+        - '-c'
+        - |
+          cd "/workspace/${_PIPELINE_NAME}/dataflow_java"
+          file=`find target -type f -name '*.jar' ! -name 'original*'`
+          gsutil cp "$file" "gs://${_COMPOSER_BUCKET}/data/${_PIPELINE_NAME}/"
