@@ -7,7 +7,10 @@ input="/workspace/schema-diff.txt"
 cat "$linput"
 while read line
 do
-    cp "$line" "/workspace/schemas/$line"
+    cp "$line" "/workspace/$line"
 done < "$input"
+cp -R schemas/scripts /workspace/schemas
+cp schemas/cloudbuild.yaml /workspace/schemas/cloudbuild.yaml
+cp schemas/cloudbuild-deploy.yaml /workspace/schemas/cloudbuild-deploy.yaml
 cd /workspace
 zip -r schemas.zip schemas/
