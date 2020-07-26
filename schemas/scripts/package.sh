@@ -12,6 +12,7 @@ cp  /workspace/datalake-repo/schemas/scripts/* /workspace/schemas/scripts/
 cp /workspace/datalake-repo/schemas/cloudbuild.yaml /workspace/schemas/cloudbuild.yaml
 cp /workspace/datalake-repo/schemas/cloudbuild-deploy.yaml /workspace/schemas/cloudbuild-deploy.yaml
 ls -la /workspace/schemas/*
-ls -la /workspace/schemas/*
-ls -la /workspace/schemas/enterprise/example_dataset/example_table3/
+echo "****************************************************"
+ls -la /workspace/schemas/enterprise/example_dataset/example_table3/*
+cd /workspace
 zip -r schemas.zip schemas/
