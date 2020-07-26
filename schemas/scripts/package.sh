@@ -2,9 +2,12 @@
 mkdir -p /workspace/schemas/
 cd /workspace/schemas/
 xargs mkdir -p < /workspace/dir-structure.txt
-cd /workspace/datalake-repo/
+echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+cat /workspace/schema-diff.txt
+echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 while read line;
 do
+    echo "/workspace/datalake-repo/$line ------------/workspace/$line"
     cp "/workspace/datalake-repo/$line" "/workspace/$line"
 done < /workspace/schema-diff.txt
 cp /workspace/datalake-repo/schemas/scripts/* /workspace/schemas/scripts/
