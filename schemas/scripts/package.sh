@@ -5,7 +5,6 @@ xargs mkdir -p < /workspace/dir-structure.txt
 find . -type f -name '*.ddl' -delete
 while IFS= read line
 do
-    echo "********************/workspace/$line&&&&&&&&&&&&&&&&&&&&&&&&&&&"
     cp "/workspace/datalake-repo/$line" "/workspace/$line"
 done < "/workspace/schema-diff.txt"
 cp  /workspace/datalake-repo/schemas/scripts/* /workspace/schemas/scripts/
