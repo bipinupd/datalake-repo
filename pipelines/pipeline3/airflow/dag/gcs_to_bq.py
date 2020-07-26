@@ -18,6 +18,7 @@ bucket = '{}_ingestion_gcs_to_bq_9876'.format(os.environ['AIRFLOW_VAR_ENV'])
 destination_dataset_table = '{}.exampledataset.personal_info'.format(
     os.environ['AIRFLOW_VAR_ENTERPRISE_PROJECT'])
 
+# GCS to BQ operator DAG example
 with airflow.DAG("GCS_To_BigQuery",
                  default_args=default_args,
                  schedule_interval="@once") as dag:

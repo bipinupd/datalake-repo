@@ -8,6 +8,7 @@ from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloud
 from airflow.contrib.operators.dataflow_operator import DataflowTemplateOperator
 import os
 
+# Pipeline to call python template.
 default_args = {
     'depends_on_past': False,
     'start_date': airflow.utils.dates.days_ago(1),

@@ -7,6 +7,7 @@ from airflow import models
 from airflow import utils
 import os
 
+# DAG to invoke dataflow jar. Move files from inbox to processing and then move to archive.
 default_dag_args = {
     'start_date': utils.dates.days_ago(1),
     'dataflow_default_options': {
