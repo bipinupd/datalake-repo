@@ -13,7 +13,7 @@ default_args = {
     "retries": 1,
     "retry_delay": datetime.timedelta(minutes=2),
 }
-
+# Run SQL command example DAG
 with airflow.DAG("Copy_Table_BigQuery",
                  default_args=default_args,
                  template_searchpath=['/home/airflow/gcs/data/pipeline4/'],
