@@ -5,8 +5,11 @@ xargs mkdir -p < /workspace/dir-structure.txt
 cd /workspace/datalake-repo/
 input="/workspace/schema-diff.txt"
 cat "$linput"
-while read line
+while read line;
+echo "################"
 do
+    pwd
+    echo "$line"
     cp "$line" "/workspace/$line"
 done < "$input"
 cp -R schemas/scripts /workspace/schemas
