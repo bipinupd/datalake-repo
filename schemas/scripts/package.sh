@@ -2,8 +2,7 @@
 mkdir -p /workspace/schemas
 cd /workspace/schemas
 xargs mkdir -p < /workspace/dir-structure.txt
-echo "****************************************************"
-ls -la /workspace/schemas/enterprise/example_dataset/*
+find . -type f -name '*.ddl' -delete
 while IFS= read line
 do
     echo "********************/workspace/$line&&&&&&&&&&&&&&&&&&&&&&&&&&&"
@@ -12,8 +11,5 @@ done < "/workspace/schema-diff.txt"
 cp  /workspace/datalake-repo/schemas/scripts/* /workspace/schemas/scripts/
 cp /workspace/datalake-repo/schemas/cloudbuild.yaml /workspace/schemas/cloudbuild.yaml
 cp /workspace/datalake-repo/schemas/cloudbuild-deploy.yaml /workspace/schemas/cloudbuild-deploy.yaml
-ls -la /workspace/schemas/*
-echo "****************************************************"
-ls -la /workspace/schemas/enterprise/example_dataset/*
 cd /workspace
 zip -r schemas.zip schemas/
