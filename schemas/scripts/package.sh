@@ -4,9 +4,10 @@ cd /workspace/schemas/
 xargs mkdir -p < /workspace/dir-structure.txt
 cd /workspace/datalake-repo/
 input="/workspace/schema-diff.txt"
-while IFS= read -r line
+cat "$linput"
+while read line
 do
-    cp "$line" "../$line"
+    cp "$line" "/workspace/schemas/$line"
 done < "$input"
 cd /workspace
 zip -r schemas.zip schemas/
