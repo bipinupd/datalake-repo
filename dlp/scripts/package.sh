@@ -14,7 +14,7 @@ input="/workspace/dlp-diff.txt"
 while IFS= read -r line
 do
   subfolder=$(echo "$line" | cut -d '/' -f 2)
-  if [[ "$subfolder "== "deIdentify-templates" ]]; then
+  if [[ "$subfolder" == "deIdentify-templates" ]]; then
     cp "$line" "/workspace/dlp/deIdentify-templates/"
     template_file=`echo "${line}" | awk -F/ '{print $NF}'`
     it_test_file="${template_file%.*}"_test.py
