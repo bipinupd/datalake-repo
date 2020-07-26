@@ -3,7 +3,7 @@ mkdir -p /workspace/dlp/{deIdentify-templates,inspect-templates,scripts}
 mkdir -p /workspace/dlp/tests/utils
 mkdir -p /workspace/dlp/tests/it-test
 cd /workspace/dlp
-find . -type f -name '*.ddl' -delete
+find . -type f -name '*.*' -delete
 cd /workspace/datalake-repo/
 cp -R dlp/scripts/* /workspace/dlp/scripts/
 cp -R dlp/tests/utils/*.py /workspace/dlp/tests/utils/
