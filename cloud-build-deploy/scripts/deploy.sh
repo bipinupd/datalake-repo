@@ -14,10 +14,6 @@ for dir in `find . -maxdepth 1 -mindepth 1 -type d`; do
             fi
         done < "$directory/scripts/deploy_variables"
         _subs=`echo $subs_var | sed 's/,*$//'`
-        echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-        cat "$directory/cloudbuild-deploy.yaml"
-        echo $_subs
-        echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
         status=`gcloud builds submit --config "$directory/cloudbuild-deploy.yaml" --substitutions=$_subs`
         if [[ $status -ne "0" ]]; then  
             echo "Build failed for $directory"
