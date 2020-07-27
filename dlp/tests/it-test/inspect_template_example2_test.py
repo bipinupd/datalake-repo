@@ -2,11 +2,11 @@ from utils import common
 from pytest import mark
 
 @mark.smoke
-class GenericInspectTest:
+class GenericInspectForExample2Test:
     
     @classmethod 
     def setup_class(self):
-        self.template_id = "generic_inspect_template"
+        self.template_id = "generic_inspect_template_example2"
 
     def test_inspect_email(self, project):
         item = {'value': 'My email is test@example.com'}
