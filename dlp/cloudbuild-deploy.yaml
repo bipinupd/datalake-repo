@@ -31,5 +31,7 @@ steps:
       - '-c'
       - |
         cd /workspace/dlp/tests
-        pytest -m smoke --project_id=$_WORK -s
+        if [ "$(ls -A it-test/)" ]; then
+          pytest -m smoke --project_id=$_WORK -s
+        fi
       id: 'IT/Smoke Test'
