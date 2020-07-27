@@ -10,7 +10,7 @@ steps:
         cd /workspace/
         unzip -f dlp.zip
       id: 'Unzip artifact'
-    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
       id: 'Deploy Artifacts'
       entrypoint: bash
       args:
