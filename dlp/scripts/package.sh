@@ -15,13 +15,13 @@ do
   if [[ "$subfolder" == "deIdentify-templates" ]]; then
     cp "$line" "/workspace/dlp/deIdentify-templates/"
     template_file=`echo "${line}" | awk -F/ '{print $NF}'`
-    it_test_file="${template_file%.*}"_test.py
+    it_test_file="${template_file}"_test.py
     cp "dlp/tests/it-test/$it_test_file" "/workspace/dlp/tests/it-test/"
   fi
   if [[ "$subfolder" == "inspect-templates" ]]; then
     cp "$line" "/workspace/dlp/inspect-templates/"
     template_file=`echo "${line}" | awk -F/ '{print $NF}'`
-    it_test_file="${template_file%.*}"_test.py
+    it_test_file="${template_file}"_test.py
     cp "dlp/tests/it-test/$it_test_file" "/workspace/dlp/tests/it-test/"
   fi
 done < "$input"
