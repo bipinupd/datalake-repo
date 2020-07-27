@@ -33,4 +33,3 @@ steps:
         cd /workspace/dlp/tests
         pytest -m smoke --project_id=$_WORK -s
       id: 'IT/Smoke Test'
-          
