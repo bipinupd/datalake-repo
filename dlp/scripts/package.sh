@@ -6,7 +6,7 @@ cd /workspace/dlp
 find . -type f -name '*.*' -delete
 cd /workspace/datalake-repo/
 cp -R dlp/scripts/* /workspace/dlp/scripts/
-cp -R dlp/tests/ /workspace/dlp/tests
+cp -R dlp/tests/* /workspace/dlp/tests/
 cp dlp/cloudbuild* /workspace/dlp/
 input="/workspace/dlp-diff.txt"
 while IFS= read -r line
