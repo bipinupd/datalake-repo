@@ -10,7 +10,7 @@ steps:
         cd /workspace/
         unzip -f dlp.zip
       id: 'Unzip artifact'
-    - name: 'gcr.io/${PROJECT_ID}/beam-deployment-image'
+    - name: 'gcr.io/${PROJECT_ID}/dlp_image'
       id: 'Deploy Artifacts'
       entrypoint: bash
       args:
@@ -19,11 +19,11 @@ steps:
           cd /workspace/dlp
           deidentify_status=$(bash /workspace/dlp/scripts/deidentify_script.sh $_WORK)
           inspect_status=$(bash /workspace/dlp/scripts/inspect_script.sh $_WORK)
-          if [[ $deidentify_status -eq "0" ]] && [[ $inspect_status -eq "0" ]]
+          if [[ $deidentify_status -eq "0" ]] && [[ $inspect_status -eq "0" ]];
           then
-            echo 0
+            exit 0
           else
-            echo -1
+            exit -1
           fi
     - name: 'gcr.io/${PROJECT_ID}/dp-test-python'
       entrypoint: bash
