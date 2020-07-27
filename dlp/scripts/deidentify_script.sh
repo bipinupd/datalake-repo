@@ -3,7 +3,7 @@ PROJECT_ID=$1
 API_ROOT_URL="https://dlp.googleapis.com"
 ALL_API_CALL_SUCCESS=0;
 
-for template in /workspace/dlp/deIdentify-templates/*.json; do
+for template in `find /workspace/dlp/deIdentify-templates -name *.json`; do
   cat "$template" | jq '.deidentifyTemplate.deidentifyConfig.recordTransformations.fieldTransformations | . [].primitiveTransformation | . [].cryptoKey.kmsWrapped.wrappedKey' |  sed 's/\"//g' | cut -d '_' -f 1 > /workspace/keys_in_template
   input="/workspace/keys_in_template"
   declare -A dlp_keys
@@ -44,4 +44,4 @@ for template in /workspace/dlp/deIdentify-templates/*.json; do
   fi
 done
 
-echo $ALL_API_CALL_SUCCESS
+exit $ALL_API_CALL_SUCCESS
